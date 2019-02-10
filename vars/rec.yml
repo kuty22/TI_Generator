@@ -6,3 +6,4 @@ TI_HOST_CONF_tmp:
     ti_generator_target_folder:
       - /home/user_test2/
       - /home/user_test3/
+...
