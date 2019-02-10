@@ -1,0 +1,25 @@
+---
+- name: Create target list
+  set_fact:
+    target_list: "{{ target_list | default([]) + [ {'li': item.ti_generator_target_folder, 'folder': item.file_path, 'file': item.file_name ,'name': item.name }] }}"
+  with_items: "{{ TI_HOST_CONF }}"
+
+- name: Get information from files
+  command: "ls -lad {{ item .li | join(' ') }}"
+  register: infos_list
+  with_items: "{{ target_list }}"
+
+- name: Instanciate 'generator_message'
+  set_fact:
+    generator_message:
+
+- name: Create script paramerters string list
+  set_fact:
+    generator_message: "{{ generator_message}} + [-d {{item.item.folder}} -f {{item.item.file}} -c \"{{item.stdout}}\" ]"
+  with_items: "{{ infos_list.results }}"
+
+- name: local action
+  local_action: "command python3.6 {{ role_path}}/scripts/ti_generator.py {{ item[:-2] }}"
+  with_items: "{{ generator_message.split('+ [') }}"
+
+...

@@ -1,0 +1,25 @@
+---
+  
+provisioner_user_list:
+  - user_test1
+  - user_test2
+  - user_test3
+
+provisioner_differents_permission:
+  - 755
+  - 544
+  - 400
+  - 654
+
+provisioner_directory:
+  - dire_test1
+  - dire_test2
+  - dire_test3
+
+provisioner_files:
+  - conf.txt
+  - vhost_website-random.conf
+  - test-file.txt
+
+
+...

@@ -1,0 +1,9 @@
+---
+TI_HOST_CONF_tmp:
+  - name: Fix prod
+    file_name: testinfra-v1.py
+    file_path: ti_result/
+    ti_generator_target_folder:
+      - /home/user_test1/
+      - /home/user_test2/
+...

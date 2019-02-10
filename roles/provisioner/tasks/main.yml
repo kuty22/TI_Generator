@@ -1,0 +1,7 @@
+---
+
+- name: Call construct_user for each users
+  include_tasks: Create_{{ item }}.yml
+  with_items: "{{ provisioner_user_list }}"
+
+...
