@@ -10,6 +10,7 @@ __summary__:
 
   This project aims to automate the creation of TestInfra scripts. It tests the files permissions for now, and more options will be added along the time.
   You can easily run it on your Production environment to fix configuration.
+  Version 0.1.0
 
 ## Use it
 
@@ -141,3 +142,4 @@ __summary__:
 - [Molecule website](https://molecule.readthedocs.io/en/latest/)
 - [TestInfra website](https://testinfra.readthedocs.io/en/latest/)
 - [python3](https://docs.python.org/3.6/)
+- Version = 0.1.0
