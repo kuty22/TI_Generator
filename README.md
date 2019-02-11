@@ -9,9 +9,13 @@ __summary__:
 ## Description
 
   This project aims to automate the creation of TestInfra scripts. It tests the files permissions for now, and more options will be added along the time.
-  You can easily run it on your Production environment to fix configuration.
+  You can easily run it on your Production environment to fix configuration.  
   Version 0.1.0
 
+  __python requirement:__
+  - xwlt
+  - csv
+  - pandas
 ## Use it
 
   The generator is located in the role `ti.generator`, you have to set some targets file

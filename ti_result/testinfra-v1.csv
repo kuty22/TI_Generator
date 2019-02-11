@@ -1,0 +1,3 @@
+,func_name,group,mode,target_file,user
+0,testinfra_v10,user_test1,700,/home/user_test1/,user_test1
+1,testinfra_v11,user_test2,700,/home/user_test2/,user_test2

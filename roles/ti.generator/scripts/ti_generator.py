@@ -2,6 +2,7 @@ import sys
 import os
 import argparse
 from string import Template
+import pandas as pd
 
 # Template variables:
 #   - target_file
@@ -121,6 +122,9 @@ class IT_generator_file:
             # write header
             header_script = TI_TEMPLATE_HEADER.safe_substitute() if len(self.__templated_files) is 0 else ""
             script_template.write(header_script)
+
+            tmp_csv  = []
+
             for configuration in self.__configurations:
                 function_name = self.__check_function_name_validity()
                 self.__templated_files += TI_TEMPLATE_FUNCTION.substitute(
@@ -131,7 +135,15 @@ class IT_generator_file:
                     group           = configuration["group"],
                     mode            = configuration["permissions"]["full"]
                 )
-
+                tmp_csv.append(dict({
+                    'target_file'     : configuration["path"],
+                    'func_name'       : function_name,
+                    'user'            : configuration["owner"],
+                    'group'           : configuration["group"],
+                    'mode'            : configuration["permissions"]["full"]
+                }))
+            pd.DataFrame(tmp_csv).to_csv(self.__path_file.replace(".py", ".csv"))
+            pd.DataFrame(tmp_csv).to_excel(self.__path_file.replace(".py", ".xls"))
             script_template.write(self.__templated_files)
 
 def main(configuration):
