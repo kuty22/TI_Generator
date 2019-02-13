@@ -146,4 +146,8 @@ __summary__:
 - [Molecule website](https://molecule.readthedocs.io/en/latest/)
 - [TestInfra website](https://testinfra.readthedocs.io/en/latest/)
 - [python3](https://docs.python.org/3.6/)
-- Version = 0.1.0
+
+| **version** | **description**                              |
+|:-----------:|:-------------------------------------------- |
+|   `0.1.0`   | generate testinfra script for specific file. |  
+|             |                                              ||

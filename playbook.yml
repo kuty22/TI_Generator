@@ -1,19 +1,17 @@
 ---
 - hosts: v1
-  pre_tasks:
-
-    - set_fact:
-        TI_HOST_CONF: []
-
-    - include_vars: vars/prod.yml
-
-    - set_fact:
-        TI_HOST_CONF: "{{TI_HOST_CONF}} +[ TI_HOST_CONF_tmp ]"
-
-    - include_vars: vars/rec.yml
-
-    - set_fact:
-        TI_HOST_CONF: "{{TI_HOST_CONF}} +[ TI_HOST_CONF_tmp ]"
+  vars:
+    TI_HOST_CONF:
+      - name: Fix prod
+        file_name: testinfra-v1.py
+        file_path: ti_result/
+        export_csv: false
+        export_xls: true
+        ti_generator_target_file:
+          - /home/user_test1/
+        ti_generator_target_recursive:
+          - /home/user_test2/
+          - /home/user_test3/
   roles:
     # - role: provisioner
     - role: ti.generator

@@ -10,6 +10,7 @@
   file:
     path: "/home/user_test1/{{ item }}"
     owner: user_test1
+    group: user_test1
     state: directory
   with_items: "{{ provisioner_directory }}"
 
@@ -17,6 +18,7 @@
   file:
     path: "/home/user_test1/dire_test1/{{ item }}"
     owner: user_test1
+    group: user_test1
     state: touch
   with_random_choice: "{{ provisioner_files }}"
 
@@ -24,6 +26,7 @@
   file:
     path: "/home/user_test1/dire_test2/{{ item }}"
     owner: user_test1
+    group: user_test1
     state: touch
   with_random_choice: "{{ provisioner_files }}"
 
@@ -31,23 +34,30 @@
   file:
     path: "/home/user_test1/dire_test3/{{ item }}"
     owner: user_test1
+    group: user_test1
     state: touch
   with_random_choice: "{{ provisioner_files }}"
 
 - name: create folder
   file:
     path: "/home/user_test1/dire_test1"
+    owner: user_test1
+    group: user_test1
     mode: "{{ item }}"
   with_random_choice: "{{ provisioner_differents_permission }}"
 
 - name: create folder
   file:
     path: "/home/user_test1/dire_test2"
+    owner: user_test1
+    group: user_test1
     mode: "{{ item }}"
   with_random_choice: "{{ provisioner_differents_permission }}"
 
 - name: create folder
   file:
     path: "/home/user_test1/dire_test3"
+    owner: user_test1
+    group: user_test1
     mode: "{{ item }}"
   with_random_choice: "{{ provisioner_differents_permission }}"

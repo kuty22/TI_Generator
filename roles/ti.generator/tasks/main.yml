@@ -1,11 +1,21 @@
 ---
 - name: Create target list
   set_fact:
-    target_list: "{{ target_list | default([]) + [ {'li': item.ti_generator_target_folder, 'folder': item.file_path, 'file': item.file_name ,'name': item.name }] }}"
+    target_list: "{{ target_list | default([]) + [ {'li_rec': item.ti_generator_target_recursive, 'export_csv': item.export_csv, 'export_xls': item.export_xls, 'li_file': item.ti_generator_target_file, 'folder': item.file_path, 'file': item.file_name ,'name': item.name }] }}"
   with_items: "{{ TI_HOST_CONF }}"
 
+- name: debug tests
+  debug:
+    msg: "{{ target_list }}"
+  with_items: "{{ target_list }}"
+
+- name: Get information from files rec
+  command: "ls -laR {{ item.li_rec | join(' ') }}"
+  register: infos_list_rec
+  with_items: "{{ target_list }}"
+
 - name: Get information from files
-  command: "ls -lad {{ item .li | join(' ') }}"
+  command: "ls -lad {{ item.li_file | join(' ') }}"
   register: infos_list
   with_items: "{{ target_list }}"
 
@@ -15,11 +25,16 @@
 
 - name: Create script paramerters string list
   set_fact:
-    generator_message: "{{ generator_message}} + [-d {{item.item.folder}} -f {{item.item.file}} -c \"{{item.stdout}}\" ]"
+    generator_message: "{{ generator_message}} + [-d {{item.item.folder}} -f {{item.item.file}} -c \"{{item.stdout}}\"  -e 'xls'={{ item.item.export_xls | default('false')}} -e csv={{ item.item.export_csv | default('false')}}]"
   with_items: "{{ infos_list.results }}"
 
+- name: Create script parameters string list (recursive mode)
+  set_fact:
+    generator_message: "{{ generator_message}} + [-d {{item.item.folder}} -f {{item.item.file}} -r \"{{item.stdout}}\" -e xls={{ item.item.export_xls | default('false')}} -e csv={{ item.item.export_csv | default('false')}}]"
+  with_items: "{{ infos_list_rec.results }}"
+
 - name: local action
-  local_action: "command python3.6 {{ role_path}}/scripts/ti_generator.py {{ item[:-2] }}"
+  local_action: "command python3.6 {{ role_path}}/scripts/ti_generator.py {{ item[:-1] }}"
   with_items: "{{ generator_message.split('+ [') }}"
 
 ...
