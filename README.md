@@ -16,19 +16,20 @@ __summary__:
   - xwlt
   - csv
   - pandas
+
 ## Use it
 
   The generator is located in the role `ti.generator`, you have to set some targets file
   with the variable `TI_HOST_CONF`.
 
-  Basic example:  
+  minimal playbook example:  
   __playbook.yml:__  
   ```yaml
   - hosts: v1
     vars:
-    TI_HOST_CONF_tmp:
+    TI_HOST_CONF:
       - name: Fix prod #  configuration name
-        file_name: testinfra-v1.py # file tests generated
+        file_name: testinfra-v1.py # test file generated nane
         file_path: ti_result/ # folder where the test file will be write on you host
         export_csv: false # export to csv file (the name is of the export file is the same than file_name with a different extension)
         export_xls: true # export to excel file (the name is of the export file is the same than file_name with a different extension)
@@ -42,7 +43,7 @@ __summary__:
      - role: ti.generator
   ```
 
-  result :  
+  result:  
   __ti_result/testinfra-v1.py:__  
   ``` py
   #######################################
