@@ -11,7 +11,7 @@ def testinfra_v10(host):
     file_target = host.file('/home/user_test1/')
     assert file_target.user == 'user_test1'
     assert file_target.group == 'user_test1'
-    assert file_target.mode == 700
+    assert file_target.mode == 0o700
 
 
 # target: /home/user_test2/.bash_logout
@@ -20,7 +20,7 @@ def testinfra_v11(host):
     file_target = host.file('/home/user_test2/.bash_logout')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test2/.bash_profile
@@ -29,7 +29,7 @@ def testinfra_v12(host):
     file_target = host.file('/home/user_test2/.bash_profile')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test2/.bashrc
@@ -38,7 +38,7 @@ def testinfra_v13(host):
     file_target = host.file('/home/user_test2/.bashrc')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test2/dire_test1
@@ -47,7 +47,7 @@ def testinfra_v14(host):
     file_target = host.file('/home/user_test2/dire_test1')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 620
+    assert file_target.mode == 0o620
 
 
 # target: /home/user_test2/dire_test2
@@ -56,7 +56,7 @@ def testinfra_v15(host):
     file_target = host.file('/home/user_test2/dire_test2')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 362
+    assert file_target.mode == 0o362
 
 
 # target: /home/user_test2/dire_test3
@@ -65,7 +65,7 @@ def testinfra_v16(host):
     file_target = host.file('/home/user_test2/dire_test3')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 216
+    assert file_target.mode == 0o216
 
 
 # target: /home/user_test2/dire_test1/conf.txt
@@ -74,7 +74,7 @@ def testinfra_v17(host):
     file_target = host.file('/home/user_test2/dire_test1/conf.txt')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test2/dire_test1/test-file.txt
@@ -83,7 +83,7 @@ def testinfra_v18(host):
     file_target = host.file('/home/user_test2/dire_test1/test-file.txt')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test2/dire_test2/conf.txt
@@ -92,7 +92,7 @@ def testinfra_v19(host):
     file_target = host.file('/home/user_test2/dire_test2/conf.txt')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test2/dire_test2/test-file.txt
@@ -101,7 +101,7 @@ def testinfra_v110(host):
     file_target = host.file('/home/user_test2/dire_test2/test-file.txt')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test2/dire_test2/vhost_website-random.conf
@@ -110,7 +110,7 @@ def testinfra_v111(host):
     file_target = host.file('/home/user_test2/dire_test2/vhost_website-random.conf')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'root'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test2/dire_test3/conf.txt
@@ -119,7 +119,7 @@ def testinfra_v112(host):
     file_target = host.file('/home/user_test2/dire_test3/conf.txt')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test2/dire_test3/test-file.txt
@@ -128,7 +128,7 @@ def testinfra_v113(host):
     file_target = host.file('/home/user_test2/dire_test3/test-file.txt')
     assert file_target.user == 'user_test2'
     assert file_target.group == 'user_test2'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test3/.bash_logout
@@ -137,7 +137,7 @@ def testinfra_v114(host):
     file_target = host.file('/home/user_test3/.bash_logout')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test3/.bash_profile
@@ -146,7 +146,7 @@ def testinfra_v115(host):
     file_target = host.file('/home/user_test3/.bash_profile')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test3/.bashrc
@@ -155,7 +155,7 @@ def testinfra_v116(host):
     file_target = host.file('/home/user_test3/.bashrc')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test3/dire_test1
@@ -164,7 +164,7 @@ def testinfra_v117(host):
     file_target = host.file('/home/user_test3/dire_test1')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 040
+    assert file_target.mode == 0o040
 
 
 # target: /home/user_test3/dire_test2
@@ -173,7 +173,7 @@ def testinfra_v118(host):
     file_target = host.file('/home/user_test3/dire_test2')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 040
+    assert file_target.mode == 0o040
 
 
 # target: /home/user_test3/dire_test3
@@ -182,7 +182,7 @@ def testinfra_v119(host):
     file_target = host.file('/home/user_test3/dire_test3')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 620
+    assert file_target.mode == 0o620
 
 
 # target: /home/user_test3/dire_test1/conf.txt
@@ -191,7 +191,7 @@ def testinfra_v120(host):
     file_target = host.file('/home/user_test3/dire_test1/conf.txt')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test3/dire_test1/test-file.txt
@@ -200,7 +200,7 @@ def testinfra_v121(host):
     file_target = host.file('/home/user_test3/dire_test1/test-file.txt')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test3/dire_test2/test-file.txt
@@ -209,7 +209,7 @@ def testinfra_v122(host):
     file_target = host.file('/home/user_test3/dire_test2/test-file.txt')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test3/dire_test2/vhost_website-random.conf
@@ -218,7 +218,7 @@ def testinfra_v123(host):
     file_target = host.file('/home/user_test3/dire_test2/vhost_website-random.conf')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test3/dire_test3/conf.txt
@@ -227,7 +227,7 @@ def testinfra_v124(host):
     file_target = host.file('/home/user_test3/dire_test3/conf.txt')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 
 
 # target: /home/user_test3/dire_test3/vhost_website-random.conf
@@ -236,5 +236,5 @@ def testinfra_v125(host):
     file_target = host.file('/home/user_test3/dire_test3/vhost_website-random.conf')
     assert file_target.user == 'user_test3'
     assert file_target.group == 'user_test3'
-    assert file_target.mode == 644
+    assert file_target.mode == 0o644
 

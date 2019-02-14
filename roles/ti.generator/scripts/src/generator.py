@@ -21,7 +21,7 @@ def $func_name(host):
     file_target = host.file('$target_file')
     assert file_target.user == '$user'
     assert file_target.group == '$group'
-    assert file_target.mode == $mode
+    assert file_target.mode == 0o$mode
 
 """)
 
