@@ -5,13 +5,15 @@
       - name: Fix prod
         file_name: testinfra-v1.py
         file_path: ti_result/
-        export_csv: false
-        export_xls: true
+        export_csv: False
+        export_xls: True
         ti_generator_target_file:
           - /home/user_test1/
         ti_generator_target_recursive:
           - /home/user_test2/
           - /home/user_test3/
+        ti_generator_port: True
+
   roles:
     # - role: provisioner
     - role: ti.generator

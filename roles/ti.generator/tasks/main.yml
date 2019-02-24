@@ -1,13 +1,8 @@
 ---
 - name: Create target list
   set_fact:
-    target_list: "{{ target_list | default([]) + [ {'li_rec': item.ti_generator_target_recursive, 'export_csv': item.export_csv, 'export_xls': item.export_xls, 'li_file': item.ti_generator_target_file, 'folder': item.file_path, 'file': item.file_name ,'name': item.name }] }}"
+    target_list: "{{ target_list | default([]) + [ {'port': item.ti_generator_port, 'li_rec': item.ti_generator_target_recursive, 'export_csv': item.export_csv, 'export_xls': item.export_xls, 'li_file': item.ti_generator_target_file, 'folder': item.file_path, 'file': item.file_name ,'name': item.name }] }}"
   with_items: "{{ TI_HOST_CONF }}"
-
-- name: debug tests
-  debug:
-    msg: "{{ target_list }}"
-  with_items: "{{ target_list }}"
 
 - name: Get information from files rec
   command: "ls -laR {{ item.li_rec | join(' ') }}"
@@ -19,19 +14,51 @@
   register: infos_list
   with_items: "{{ target_list }}"
 
+- name: Get information from ports listen
+  command: "ss -ltnpo"
+  register: infos_port_listen
+  with_items: "{{ target_list }}"
+  when:
+    - "item.port == true"
+    # - "item.port_establishe == false"
+
+# - name: Get information from ports listen and estab
+#   command: "ss -ltnpoa"
+#   register: infos_port_all
+#   with_items: "{{ target_list }}"
+#   when:
+#     - "item.port == true"
+#     - "item.port_establishe == true"
+
 - name: Instanciate 'generator_message'
   set_fact:
     generator_message:
 
 - name: Create script paramerters string list
   set_fact:
-    generator_message: "{{ generator_message}} + [-d {{item.item.folder}} -f {{item.item.file}} -c \"{{item.stdout}}\"  -e 'xls'={{ item.item.export_xls | default('false')}} -e csv={{ item.item.export_csv | default('false')}}]"
+    generator_message: "{{ generator_message}} + [ -d {{item.item.folder}} -f {{item.item.file}} -c \"{{item.stdout}}\"  -e 'xls'={{ item.item.export_xls | default('false')}} -e csv={{ item.item.export_csv | default('false')}}]"
   with_items: "{{ infos_list.results }}"
 
 - name: Create script parameters string list (recursive mode)
   set_fact:
-    generator_message: "{{ generator_message}} + [-d {{item.item.folder}} -f {{item.item.file}} -r \"{{item.stdout}}\" -e xls={{ item.item.export_xls | default('false')}} -e csv={{ item.item.export_csv | default('false')}}]"
+    generator_message: "{{ generator_message}} + [ -d {{item.item.folder}} -f {{item.item.file}} -r \"{{item.stdout}}\" -e xls={{ item.item.export_xls | default('false')}} -e csv={{ item.item.export_csv | default('false')}}]"
   with_items: "{{ infos_list_rec.results }}"
+
+- name: Create script parameters string list (port mode listen)
+  set_fact:
+    generator_message: "{{ generator_message}} + [ -d {{item.item.folder}} -f {{item.item.file}} -p \"{{item.stdout}}\" -e xls={{ item.item.export_xls | default('false')}} -e csv={{ item.item.export_csv | default('false')}}]"
+  with_items: "{{ infos_port_listen.results }}"
+  when:
+    - "item.item.port == true"
+    # - "item.item.port_establishe == false"
+
+# - name: Create script parameters string list (port mode listen + established)
+#   set_fact:
+#     generator_message: "{{ generator_message}} + [ -d {{item.item.folder}} -f {{item.item.file}} -p \"{{item.stdout}}\" -e xls={{ item.item.export_xls | default('false')}} -e csv={{ item.item.export_csv | default('false')}}]"
+#   with_items: "{{ infos_port_all.results }}"
+#   when:
+#     - "item.item.port == true"
+#     - "item.item.port_establishe == true"
 
 - name: local action
   local_action: "command python3.6 {{ role_path}}/scripts/ti_generator.py {{ item[:-1] }}"

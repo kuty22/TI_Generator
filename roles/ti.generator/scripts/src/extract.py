@@ -1,16 +1,38 @@
+import re
 
 class Extract_content:
 
-    def __init__(self, contents, recursive_content):
-        self.__content = contents.split("\n")
+    def __init__(self, data): #contents, recursive_content):
+        basic_content = data["basic"]
+        recursive_content = data["recursivity"]
+        port_content = data["port"]
+        self.__it_data_port = None
         self.__it_data = []
-        if recursive_content:
-            self.__process_content_recursif()
-        else:
+        if port_content:
+            self.__content = port_content.split("\n")
+            self.__process_content_port()
+        if basic_content:
+            self.__content = basic_content.split("\n")
             self.__process_content()
+        if recursive_content and type(recursive_content) == str:
+            self.__content = recursive_content.split("\n")
+            self.__process_content_recursif()
+
 
     def get_content(self):
+        if self.__it_data_port:
+            return self.__it_data_port
         return self.__it_data
+
+    def __process_content_port(self):
+        tmp_content = self.__content
+        self.__it_data_port = []
+        for i, item in enumerate(tmp_content):
+            if i != 0 and item:
+                tmp = re.sub(' +', ' ', item).split(' ')
+                listen_address_port = re.sub(' +', ' ', item).split(' ')[3]
+                users = re.sub(' +', ' ', item).split(' ')[-1]
+                self.__it_data_port.append(dict({'address_port': listen_address_port, "users": users}))
 
     def __process_content(self):
         for item in self.__content:
@@ -24,10 +46,10 @@ class Extract_content:
         path = ''
         for item in self.__content:
             tmp_dict = dict({})
-            if '/' in item:
+            if item and '/' in item:
                 path = item[:-1]
             elif item and "total" != item[:5] and '.' != item[-1]:
-                if '/' == path[-1]:
+                if path and '/' == path[-1]:
                     tmp_dict.update(dict({'path': "{}{}".format(path, self.__get_file_name(item)["path"])}))
                 else:
                     tmp_dict.update(dict({'path': "{}/{}".format(path, self.__get_file_name(item)["path"])}))
