@@ -16,6 +16,7 @@ __summary__:
   - xwlt
   - csv
   - pandas
+  - argparse-graph
 
 ## Use it
 

@@ -1,0 +1,21 @@
+# Extract basic file content
+0:
+  options:
+    - file
+    - directory
+    - content
+    - export
+# Exctract directory content recursively
+1:
+  options:
+    - file
+    - directory
+    - recursive_content
+    - export
+# Extract ports content
+2:
+  options:
+    - file
+    - directory
+    - port_content
+    - export

@@ -3,8 +3,6 @@ import os
 import argparse
 from string import Template
 import pandas as pd
-from src.extract import Extract_content
-
 
 # Template variables:
 #   - target_file
@@ -40,95 +38,67 @@ TI_TEMPLATE_HEADER = Template("""
 
 """)
 
-class IT_generator_file:
+class IT_generator:
 
-    def __init__(self, content, conf):
-        self.__content = content
-        self.__directory = conf["directory"]
-        self.__file = conf["file"]
-        self.__export = list(conf["export"])
+    def __init__(self, content, configuration):
+        self._templated_files = ""
 
-        self.__templated_files = ""
-        if conf["type"] == "permissions":
-            pass
-        elif conf["type"] == "port":
-            self.__file = self.__file.replace(".py", "-port.py")
-            pass
-        if self.__directory[-1] != '/':
-            self.__directory = "{}/".format(self.__directory)
-        tmp_path = self.__directory + self.__file
-        self.__path_file = tmp_path.replace("//", "/")
+        self._content = content
+        self._directory = configuration.directory
+        self._file = configuration.file
+        self._export = list(configuration.export)
 
-        self.__create_directory()
-        self.__create_file()
+        if self._directory[-1] != '/':
+            self._directory = "{}/".format(self._directory)
 
+        tmp_path = self._directory + self._file
+        self._path_file = tmp_path.replace("//", "/")
 
-    def __create_directory(self):
-        if os.path.isdir(self.__directory) is False:
-            os.makedirs(self.__directory)
+        self._create_directory()
+        self._create_file()
 
-    def __create_file(self):
-        if os.path.isfile(self.__path_file) is False:
-            open(self.__path_file, 'a').close()
+    def _create_directory(self):
+        if os.path.isdir(self._directory) is False:
+            os.makedirs(self._directory)
 
-    def __check_function_name_validity(self, prefix="",sufix=""):
-        file_name_for_function = self.__file.split(".")[0].replace("-","_")
+    def _create_file(self):
+        if os.path.isfile(self._path_file) is False:
+            open(self._path_file, 'a').close()
+
+    def _check_function_name_validity(self, prefix="",sufix=""):
+        file_name_for_function = self._file.split(".")[0].replace("-","_")
         function_name = ""
         for i in range(0, 10000):
             function_name = prefix + file_name_for_function + str(i) + sufix
-            if function_name not in self.__templated_files:
+            if function_name not in self._templated_files:
                 break
         return function_name
 
-    def __generate_export(self, data):
-        if "csv=True" in self.__export or "csv=true" in self.__export:
-            pd.DataFrame(data).to_csv(self.__path_file.replace(".py", ".csv"))
-        if "xls=True" in self.__export or "xls=true" in self.__export:
-            pd.DataFrame(data).to_excel(self.__path_file.replace(".py", ".xls"))
+    def _generate_export(self, data):
+        if "csv=True" in self._export or "csv=true" in self._export:
+            pd.DataFrame(data).to_csv(self._path_file.replace(".py", ".csv"))
+        if "xls=True" in self._export or "xls=true" in self._export:
+            pd.DataFrame(data).to_excel(self._path_file.replace(".py", ".xls"))
 
-    def generate_port(self):
-        file_object = open(self.__path_file, 'r')
-        self.__templated_files += file_object.read()
 
-        with open(self.__path_file,'w+') as script_template:
-            # write header
-            header_script = TI_TEMPLATE_HEADER.safe_substitute() if len(self.__templated_files) is 0 else ""
-            script_template.write(header_script)
-
-            tmp_tab  = []
-
-            for configuration in self.__content:
-                function_name = self.__check_function_name_validity(sufix="_port")
-                self.__templated_files += TI_TEMPLATE_PORT_FUNCTION.substitute(
-                    asser_options   = "['file_exist', 'user', 'group', mode]",
-                    func_name       = function_name,
-                    port_address    = configuration["address_port"]
-                )
-                tmp_tab.append(dict({
-                    'func_name'       : function_name,
-                    'user'            : configuration["users"],
-                    'address_port'    : configuration["address_port"]
-                }))
-
-            self.__generate_export(tmp_tab)
-            script_template.write(self.__templated_files)
+class IT_generator_content(IT_generator):
 
     def generate(self):
 
-        file_object = open(self.__path_file, 'r')
-        self.__templated_files += file_object.read()
+        file_object = open(self._path_file, 'r')
+        self._templated_files += file_object.read()
 
-        with open(self.__path_file,'w+') as script_template:
+        with open(self._path_file,'w+') as script_template:
 
             # write header
-            header_script = TI_TEMPLATE_HEADER.safe_substitute() if len(self.__templated_files) is 0 else ""
+            header_script = TI_TEMPLATE_HEADER.safe_substitute() if len(self._templated_files) is 0 else ""
             script_template.write(header_script)
 
             tmp_csv  = []
 
-            for configuration in self.__content:
-                function_name = self.__check_function_name_validity()
-                self.__templated_files += TI_TEMPLATE_FUNCTION.substitute(
+            for configuration in self._content:
+                function_name = self._check_function_name_validity()
+                self._templated_files += TI_TEMPLATE_FUNCTION.substitute(
                     target_file     = configuration["path"],
                     asser_options   = "['file_exist', 'user', 'group', mode]",
                     func_name       = function_name,
@@ -144,5 +114,36 @@ class IT_generator_file:
                     'mode'            : configuration["permissions"]["full"]
                 }))
 
-            self.__generate_export(tmp_csv)
-            script_template.write(self.__templated_files)
+            self._generate_export(tmp_csv)
+            script_template.write(self._templated_files)
+
+class IT_generator_port(IT_generator):
+
+    def generate(self):
+        self._path_file = self._path_file.replace(".py", "-port.py")
+        self._create_file()
+        file_object = open(self._path_file, 'r')
+        self._templated_files += file_object.read()
+
+        with open(self._path_file,'w+') as script_template:
+            # write header
+            header_script = TI_TEMPLATE_HEADER.safe_substitute() if len(self._templated_files) is 0 else ""
+            script_template.write(header_script)
+
+            tmp_tab  = []
+
+            for configuration in self._content:
+                function_name = self._check_function_name_validity(sufix="_port")
+                self._templated_files += TI_TEMPLATE_PORT_FUNCTION.substitute(
+                    asser_options   = "['file_exist', 'user', 'group', mode]",
+                    func_name       = function_name,
+                    port_address    = configuration["address_port"]
+                )
+                tmp_tab.append(dict({
+                    'func_name'       : function_name,
+                    'user'            : configuration["users"],
+                    'address_port'    : configuration["address_port"]
+                }))
+
+            self._generate_export(tmp_tab)
+            script_template.write(self._templated_files)
